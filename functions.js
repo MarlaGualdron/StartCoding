@@ -27,7 +27,7 @@ const response = ansNumber(askNumber);
 
 alert(response);
 
-//Segundo ejercicio
+// //Segundo ejercicio
 const secondNumber = prompt("Dime que número quieres evaluar si es primo o no");
 
 const primeNumber = (secondNumber) => {
@@ -45,7 +45,7 @@ const primeNumber = (secondNumber) => {
 };
 primeNumber(secondNumber);
 
-//Otra forma
+// //Otra forma
 
 const isPrime = (nunber) => {
   for (let i = 2; i < nunber; i++) {
@@ -55,9 +55,9 @@ const isPrime = (nunber) => {
 };
 const number = prompt("Dime que número quieres evaluar si es primo o no");
 
-isPrime(number);
+// isPrime(number);
 
-//Tercer ejercicio
+// //Tercer ejercicio
 
 const choosingDegreeTyoe = (degreeType) => {
   let parseDegreeType = degreeType.toLowerCase();
@@ -79,3 +79,19 @@ const degreeType = prompt(
 const checkDegreeType = choosingDegreeTyoe(degreeType);
 
 // Cuarto Ejercicio
+
+//Calcular el total de la compra
+
+const totalPurcharse = () => {
+  let total = 0;
+  let productValue;
+  do {
+    productValue = prompt("Ingresa el valor del producto");
+    if (+productValue) {
+      total += +productValue;
+    } else "El valor ingresado no es correcto";
+  } while (productValue !== "total");
+  return alert(`El total es: ${total}`);
+};
+
+totalPurcharse();
