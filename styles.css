@@ -16,3 +16,18 @@ h1 {
   color: whitesmoke;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+h2 {
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+ul {
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#repos-list {
+  display: flex;
+  flex-direction: column;
+}
