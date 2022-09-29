@@ -1,60 +1,81 @@
-/*Construir la pagina para sacar el primer repositorio
-insertar el avatar del usuario y debajo de repos listar
-los 5 primeros del usuario*/
-
-// Primero obtendré los repos
-
 const baseUrl = "https://api.github.com";
 
-const listAllRepos = async () => {
-  const listRepos = await fetch(`${baseUrl}/repositories`);
-  const parseResonse = await listRepos.json();
-  return parseResonse;
+const getRandomProfile = (profileList) => {
+  const randomIndex = Math.ceil(Math.random() * profileList.length - 1);
+  const randomProfile = profileList[randomIndex];
+  return randomProfile;
 };
 
-const repoByOwner = async () => {
-  const reposlist = await listAllRepos();
-  const firstOwnerLogin = await reposlist[0].owner.login;
-  return firstOwnerLogin;
+const getPublicRepositories = async () => {
+  const response = await fetch(`${baseUrl}/repositories`);
+  const jsonResponse = await response.json();
+
+  const randomProfile = getRandomProfile(jsonResponse);
+
+  return randomProfile;
 };
 
-const avatarUrl = async () => {
-  const reposlist = await listAllRepos();
-  const firstOwnerAvatar = await reposlist[0].owner.avatar_url;
-  return firstOwnerAvatar;
+const getRepositoriesFromOwner = async (reposEndpoint) => {
+  const reposResponse = await fetch(reposEndpoint);
+  const jsonReposResponse = await reposResponse.json();
+  const responseRepos = jsonReposResponse.slice(0, 5);
+  return responseRepos;
 };
 
-const repoList = async () => {};
+const editProfile = async () => {
+  const profileData = await getPublicRepositories();
+  const avatarUrl = profileData.owner.avatar_url;
+  const name = profileData.owner.login;
+  const userRepos = await getRepositoriesFromOwner(profileData.owner.repos_url);
 
-const userName = document.querySelector(".username");
+  const userAvatar = document.querySelector("#avatar");
+  const nameNode = document.querySelector("h1");
+  const listNode = document.querySelector("#repos-list");
+  listNode.innerHTML = "";
 
-const userNamechamge = async () => {
-  userName.textContent = await repoByOwner();
-};
+  nameNode.textContent = name;
+  userAvatar.src = avatarUrl;
 
-userNamechamge();
-
-const userAvatar = document.querySelector("#avatar");
-
-const userAvatarChange = async () => {
-  userAvatar.src = await avatarUrl();
-};
-
-userAvatarChange();
-
-const listRepos = async () => {
-  const userRepos = await fetch(
-    `${baseUrl}/users/${await repoByOwner()}/repos`
-  );
-  const response = await userRepos.json();
-  const resnponserepos = await response.slice(0, 5);
-
-  resnponserepos.forEach((repo) => {
+  userRepos.forEach((repo) => {
     const repoNode = document.createElement("a");
-    const listNode = document.querySelector("#repos-list");
     repoNode.textContent = repo.html_url;
     repoNode.href = repo.html_url;
+
     listNode.appendChild(repoNode);
   });
 };
-listRepos();
+
+editProfile();
+
+//EJERCICIOS
+
+/* Utilizando eventos, agregar algun efecto de hover a la 
+imagen (puede ser algun cambio en la forma, un blur, 
+animacion, etc). NO SE PUEDE USAR EL SELECTOR 
+:hover de CSS
+
+2) Agregar un evento al boton shuffle, de forma tal que
+cuando se haha click en el mismo, se actualice el perfil con
+informacion de un usuario random selecionado de la lista
+de usuarios que provee el endpoint de Github.
+Pista, para crear la logica de seleccion random, pueden
+investigar sobre el metodo Math.random())*/
+const userAvatar = document.querySelector("#avatar");
+
+const changeImageRadius = () => {
+  // const isCircle = userAvatar.classList.contains("circle-avatar");
+
+  // if (isCircle) {
+  //   userAvatar.classList.remove("circle-avatar");
+  //   userAvatar.classList.add("square-avatar");
+  // } else {
+  //   userAvatar.classList.add("circle-avatar");
+  //   userAvatar.classList.remove("square-avatar");
+  // }
+
+  userAvatar.classList.toggle("circle-avatar");
+  userAvatar.classList.toggle("square-avatar");
+};
+
+userAvatar.addEventListener("mouseenter", changeImageRadius);
+userAvatar.addEventListener("mouseleave", changeImageRadius);
